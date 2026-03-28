@@ -1,0 +1,99 @@
+
+=======================================================
+  TASK 1 — Dynamic Array
+=======================================================
+Appending 1-12 (watch for resizes):
+  append( 1) -> [1]  size=1  cap=2
+  append( 2) -> [1, 2]  size=2  cap=2
+  [resize] capacity now 4
+  append( 3) -> [1, 2, 3]  size=3  cap=4
+  append( 4) -> [1, 2, 3, 4]  size=4  cap=4
+  [resize] capacity now 8
+  append( 5) -> [1, 2, 3, 4, 5]  size=5  cap=8
+  append( 6) -> [1, 2, 3, 4, 5, 6]  size=6  cap=8
+  append( 7) -> [1, 2, 3, 4, 5, 6, 7]  size=7  cap=8
+  append( 8) -> [1, 2, 3, 4, 5, 6, 7, 8]  size=8  cap=8
+  [resize] capacity now 16
+  append( 9) -> [1, 2, 3, 4, 5, 6, 7, 8, 9]  size=9  cap=16
+  append(10) -> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  size=10  cap=16
+  append(11) -> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]  size=11  cap=16
+  append(12) -> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]  size=12  cap=16
+
+3 pops:
+  pop() = 12 -> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]  size=11  cap=16
+  pop() = 11 -> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  size=10  cap=16
+  pop() = 10 -> [1, 2, 3, 4, 5, 6, 7, 8, 9]  size=9  cap=16
+
+=======================================================
+  TASK 2-A — Singly Linked List
+=======================================================
+insert_beg(10)
+SLL: 10
+insert_beg(20)
+SLL: 20 -> 10
+insert_beg(30)
+SLL: 30 -> 20 -> 10
+insert_end(40)
+SLL: 30 -> 20 -> 10 -> 40
+insert_end(50)
+SLL: 30 -> 20 -> 10 -> 40 -> 50
+insert_end(60)
+SLL: 30 -> 20 -> 10 -> 40 -> 50 -> 60
+delete(20) found=True
+SLL: 30 -> 10 -> 40 -> 50 -> 60
+delete(60) found=True
+SLL: 30 -> 10 -> 40 -> 50
+delete(99) found=False
+SLL: 30 -> 10 -> 40 -> 50
+
+=======================================================
+  TASK 2-B — Doubly Linked List
+=======================================================
+Initial:
+DLL: 10 <-> 20 <-> 30 <-> 40 <-> 50
+insert_after(20, 25):
+DLL: 10 <-> 20 <-> 25 <-> 30 <-> 40 <-> 50
+insert_after(50, 55):
+DLL: 10 <-> 20 <-> 25 <-> 30 <-> 40 <-> 50 <-> 55
+delete_at_pos(1):
+DLL: 10 <-> 25 <-> 30 <-> 40 <-> 50 <-> 55
+delete_at_pos(last):
+DLL: 10 <-> 25 <-> 30 <-> 40 <-> 50
+
+=======================================================
+  TASK 3-A — Stack (LIFO)
+=======================================================
+  push(1) -> Stack(top->bottom): ['1']
+  push(2) -> Stack(top->bottom): ['2', '1']
+  push(3) -> Stack(top->bottom): ['3', '2', '1']
+  push(4) -> Stack(top->bottom): ['4', '3', '2', '1']
+  push(5) -> Stack(top->bottom): ['5', '4', '3', '2', '1']
+  peek() = 5
+  pop() = 5 -> Stack(top->bottom): ['4', '3', '2', '1']
+  pop() = 4 -> Stack(top->bottom): ['3', '2', '1']
+
+=======================================================
+  TASK 3-B — Queue (FIFO)
+=======================================================
+  enqueue(A) -> Queue(front->rear): ['A']
+  enqueue(B) -> Queue(front->rear): ['A', 'B']
+  enqueue(C) -> Queue(front->rear): ['A', 'B', 'C']
+  enqueue(D) -> Queue(front->rear): ['A', 'B', 'C', 'D']
+  enqueue(E) -> Queue(front->rear): ['A', 'B', 'C', 'D', 'E']
+  front() = A
+  dequeue() = A -> Queue(front->rear): ['B', 'C', 'D', 'E']
+  dequeue() = B -> Queue(front->rear): ['C', 'D', 'E']
+
+=======================================================
+  TASK 4 — Balanced Parentheses
+=======================================================
+Expr         Expected   Got      Result
+------------------------------------------
+'([])'       True       True     PASS
+'([)]'       False      False    PASS
+'((('        False      False    PASS
+''           True       True     PASS
+'{[()]}'     True       True     PASS
+')('         False      False    PASS
+
+All tasks done.
