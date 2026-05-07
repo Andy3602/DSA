@@ -1,0 +1,43 @@
+
+=======================================================
+  TASK 1 – Binary Search Tree
+=======================================================
+
+Inserting: [50, 30, 70, 20, 40, 60, 80]
+Inorder after insertion: [20, 30, 40, 50, 60, 70, 80]
+
+Search 20  → True
+Search 90  → False
+
+Deleting leaf node 20 ...
+Inorder: [30, 40, 50, 60, 70, 80]
+
+Inserting 65 to create one-child scenario ...
+Inorder: [30, 40, 50, 60, 65, 70, 80]
+Deleting node 60 (one child: 65) ...
+Inorder: [30, 40, 50, 65, 70, 80]
+
+Deleting node 30 (two children: 40) ...
+Inorder: [40, 50, 65, 70, 80]
+
+Deleting root node 50 (two children) ...
+Inorder: [40, 65, 70, 80]
+
+=======================================================
+  TASK 2 – Graph (Adjacency List) + BFS + DFS
+=======================================================
+
+Adjacency List:
+  A -> [B(w=2), C(w=4)]
+  B -> [D(w=7), E(w=3)]
+  C -> [E(w=1), F(w=8)]
+  D -> [F(w=5)]
+  E -> [D(w=2), F(w=6)]
+  F -> []
+
+BFS from A: ['A', 'B', 'C', 'D', 'E', 'F']
+DFS from A: ['A', 'B', 'D', 'F', 'E', 'C']
+
+=======================================================
+  All tasks completed successfully.
+=======================================================
