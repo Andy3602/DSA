@@ -1,110 +1,119 @@
 """
-network_graph.py - Friendship / Follower Network Module
-Graph represented as adjacency list: dict[user_id] -> list[user_id]
-Supports both bidirectional (friends) and unidirectional (followers).
+algorithms.py - BFS and DFS Relationship Discovery
+--------------------------------------------------
+BFS  -> shortest path (degrees of separation) using a queue.
+DFS  -> friends-of-friends up to depth k using recursion.
 """
 
+from collections import deque   # O(1) enqueue/dequeue — standard queue ADT
 
-class SocialGraph:
-    def __init__(self, directed: bool = False):
-        """
-        directed=False  -> bidirectional friendships
-        directed=True   -> unidirectional follows
-        """
-        self._graph: dict[str, list] = {}   # adjacency list
-        self._directed = directed
 
-    # ------------------------------------------------------------------ #
-    #  Graph maintenance                                                   #
-    # ------------------------------------------------------------------ #
+# ====================================================================== #
+#  BFS – Shortest Path                                                    #
+# ====================================================================== #
 
-    def add_user_node(self, user_id: str) -> None:
-        """Ensure a node exists for this user (called on profile creation)."""
-        if user_id not in self._graph:
-            self._graph[user_id] = []
+def bfs_shortest_path(graph_dict: dict, start: str, end: str) -> list:
+    """
+    Breadth-First Search to find the shortest path from start to end.
 
-    def remove_user_node(self, user_id: str) -> None:
-        """Remove a user node and all edges touching it."""
-        if user_id in self._graph:
-            del self._graph[user_id]
-        for uid in self._graph:
-            if user_id in self._graph[uid]:
-                self._graph[uid].remove(user_id)
+    Algorithm:
+      1. Enqueue (start, [start]) — node + path so far.
+      2. While queue non-empty:
+           a. Dequeue front element.
+           b. If current == end, return path.
+           c. For each unvisited neighbour, enqueue (neighbour, path+[neighbour]).
+      3. If queue empties, no path exists.
 
-    # ------------------------------------------------------------------ #
-    #  Edge operations                                                     #
-    # ------------------------------------------------------------------ #
+    Time complexity : O(V + E)
+    Space complexity: O(V)   (visited set + queue)
 
-    def add_friendship(self, user1: str, user2: str,
-                       profile_mgr) -> bool:
-        """
-        Add a friendship (or follow) edge.
-        Validates both users exist in profile_mgr.
-        Time complexity: O(deg) to check duplicates.
-        """
-        if not profile_mgr.user_exists(user1):
-            print(f"[ERROR] User '{user1}' does not exist.")
-            return False
-        if not profile_mgr.user_exists(user2):
-            print(f"[ERROR] User '{user2}' does not exist.")
-            return False
-        if user1 == user2:
-            print("[ERROR] A user cannot befriend themselves.")
-            return False
+    Returns:
+        list of user_ids representing the shortest path,
+        or [] if no path exists.
+    """
+    if start not in graph_dict:
+        print(f"[ERROR] '{start}' not in graph.")
+        return []
+    if end not in graph_dict:
+        print(f"[ERROR] '{end}' not in graph.")
+        return []
+    if start == end:
+        return [start]
 
-        self.add_user_node(user1)
-        self.add_user_node(user2)
+    visited = {start}
+    queue   = deque()
+    queue.append((start, [start]))
 
-        if user2 not in self._graph[user1]:
-            self._graph[user1].append(user2)
-        else:
-            print(f"[WARN] Connection {user1}->{user2} already exists.")
+    while queue:
+        current, path = queue.popleft()
 
-        if not self._directed:
-            if user1 not in self._graph[user2]:
-                self._graph[user2].append(user1)
+        for neighbour in graph_dict.get(current, []):
+            if neighbour == end:
+                return path + [neighbour]
+            if neighbour not in visited:
+                visited.add(neighbour)
+                queue.append((neighbour, path + [neighbour]))
 
-        print(f"[OK] Connection added: {user1} <-> {user2}" if not self._directed
-              else f"[OK] {user1} now follows {user2}.")
-        return True
+    return []   # no path found
 
-    def remove_friendship(self, user1: str, user2: str) -> bool:
-        """
-        Remove an edge. For undirected, removes both directions.
-        Time complexity: O(deg).
-        """
-        removed = False
-        if user1 in self._graph and user2 in self._graph[user1]:
-            self._graph[user1].remove(user2)
-            removed = True
-        if not self._directed:
-            if user2 in self._graph and user1 in self._graph[user2]:
-                self._graph[user2].remove(user1)
 
-        if removed:
-            print(f"[OK] Connection removed: {user1} - {user2}.")
-        else:
-            print(f"[WARN] No connection found between '{user1}' and '{user2}'.")
-        return removed
+def print_bfs_result(path: list, start: str, end: str) -> None:
+    if path:
+        degrees = len(path) - 1
+        print(f"  Shortest path ({start} -> {end}): {' -> '.join(path)}")
+        print(f"  Degrees of separation: {degrees}")
+    else:
+        print(f"  No path found between '{start}' and '{end}'.")
 
-    # ------------------------------------------------------------------ #
-    #  Queries                                                             #
-    # ------------------------------------------------------------------ #
 
-    def get_friends(self, user_id: str) -> list:
-        """Return neighbour list. O(1)."""
-        if user_id not in self._graph:
-            print(f"[ERROR] User '{user_id}' not in graph.")
-            return []
-        return list(self._graph[user_id])
+# ====================================================================== #
+#  DFS – Friends-of-Friends (depth-limited)                              #
+# ====================================================================== #
 
-    def display_connections(self, user_id: str) -> None:
-        friends = self.get_friends(user_id)
-        label = "Follows" if self._directed else "Friends"
-        if not friends:
-            print(f"  {label} of '{user_id}': (none)")
-        else:
-            print(f"  {label} of '{user_id}': {', '.join(friends)}")
+def dfs_friends_of_friends(graph_dict: dict, start: str,
+                            max_depth: int) -> set:
+    """
+    Depth-First Search to find all users reachable within max_depth hops.
 
-    def all_nodes(self) -> list:
-        return list(self._graph.keys())
+    Algorithm (recursive):
+      dfs(node, depth, visited):
+        if depth == 0: return
+        for each neighbour of node not yet visited:
+            mark visited
+            recurse dfs(neighbour, depth-1, visited)
+
+    The starting node itself is excluded from the result.
+
+    Time complexity : O(V + E)  (each node/edge visited at most once)
+    Space complexity: O(V)      (visited set + recursion stack ≤ V deep)
+
+    Returns:
+        set of user_ids reachable within max_depth (excluding start).
+    """
+    if start not in graph_dict:
+        print(f"[ERROR] '{start}' not in graph.")
+        return set()
+
+    visited = {start}
+    reachable = set()
+
+    def _dfs(node: str, depth: int) -> None:
+        if depth == 0:
+            return
+        for neighbour in graph_dict.get(node, []):
+            if neighbour not in visited:
+                visited.add(neighbour)
+                reachable.add(neighbour)
+                _dfs(neighbour, depth - 1)
+
+    _dfs(start, max_depth)
+    return reachable
+
+
+def print_dfs_result(reachable: set, start: str, depth: int) -> None:
+    if reachable:
+        print(f"  Reachable from '{start}' within depth {depth}:")
+        for uid in sorted(reachable):
+            print(f"    - {uid}")
+    else:
+        print(f"  No users found within depth {depth} from '{start}'.")

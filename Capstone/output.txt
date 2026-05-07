@@ -1,0 +1,120 @@
+
+==================================================
+  SNE DEMO MODE — Auto Dataset
+==================================================
+
+[1] Adding users...
+[OK] User 'alice' added successfully.
+[OK] User 'bob' added successfully.
+[OK] User 'carol' added successfully.
+[OK] User 'dave' added successfully.
+[OK] User 'eve' added successfully.
+[OK] User 'frank' added successfully.
+[OK] User 'grace' added successfully.
+[OK] User 'heena' added successfully.
+
+[2] Updating profiles...
+[OK] User 'alice' updated successfully.
+[OK] User 'bob' updated successfully.
+
+[3] Displaying profiles...
+
+========================================
+  Profile: alice
+========================================
+  Name       : Alice Sharma
+  Age        : 22
+  Interests  : tech, music, travel
+  City       : Noida
+  Profession : Software Engineer
+========================================
+
+
+========================================
+  Profile: bob
+========================================
+  Name       : Bob Mehta
+  Age        : 26
+  Interests  : sports, tech, gaming, AI
+  City       : Mumbai
+  Profession : Developer
+========================================
+
+
+========================================
+  Profile: eve
+========================================
+  Name       : Eve Kumar
+  Age        : 23
+  Interests  : gaming, music, tech
+  City       : Bangalore
+  Profession : Analyst
+========================================
+
+
+[4] Creating connections...
+[OK] Connection added: alice <-> bob
+[OK] Connection added: alice <-> carol
+[OK] Connection added: alice <-> dave
+[OK] Connection added: bob <-> eve
+[OK] Connection added: bob <-> heena
+[OK] Connection added: carol <-> grace
+[OK] Connection added: dave <-> frank
+[OK] Connection added: eve <-> grace
+[OK] Connection added: frank <-> heena
+[OK] Connection added: grace <-> heena
+
+[5] Removing a connection...
+[OK] Connection removed: alice - dave.
+
+[6] Connections list...
+  Friends of 'alice': bob, carol
+  Friends of 'bob': alice, eve, heena
+
+==================================================
+  BFS — Shortest Path Queries
+==================================================
+  Shortest path (alice -> grace): alice -> carol -> grace
+  Degrees of separation: 2
+  Shortest path (alice -> heena): alice -> bob -> heena
+  Degrees of separation: 2
+
+==================================================
+  DFS — Friends-of-Friends
+==================================================
+  Reachable from 'alice' within depth 2:
+    - bob
+    - carol
+    - eve
+    - grace
+    - heena
+  Reachable from 'alice' within depth 3:
+    - bob
+    - carol
+    - eve
+    - frank
+    - grace
+    - heena
+
+==================================================
+  Friend Suggestions for 'alice'
+==================================================
+  Top suggestions for 'alice' (sorted by common interests):
+  1. eve (Eve Kumar) — 2 common interest(s)
+  2. grace (Grace Nair) — 2 common interest(s)
+  3. dave (Dave Patel) — 1 common interest(s)
+  4. frank (Frank Verma) — 1 common interest(s)
+  5. heena (Heena Joshi) — 1 common interest(s)
+
+==================================================
+  Sorting Algorithm Comparison (Unit-3)
+==================================================
+
+  [Sort Comparison]
+  Insertion Sort result : [2, 2, 1, 1, 1]
+  Merge Sort result     : [2, 2, 1, 1, 1]
+  Both sorts agree      : MATCH ✓
+
+==================================================
+  DEMO COMPLETE
+==================================================
